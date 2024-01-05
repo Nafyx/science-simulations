@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>
+            Science Simulations
+        </title>
+        <style>
+            @import url("https://fonts.googleapis.com/css?family=Roboto");
+            body {
+                margin: 0;
+                padding: 0;
+                font-family: Roboto;
+            }
+            .back {
+                height: 100vh;
+                width: 100%;
+                background-image: linear-gradient(rgba(0, 0, 0, .75), rgba(0, 0, 0, .75)), url(SciSimBack.png);
+                background-position: center;
+            }
+            .nav {
+                margin: auto;
+                padding: none;
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background-color: white;
+            }
+            .nav ul li {
+                list-style: none;
+                display: inline-block;
+                margin: 0 20px;
+                margin-top: 15%;
+            }
+            .nav ul li a{
+                text-decoration: none;
+                color: black;
+                text-transform: uppercase;
+                font-size: 100%;
+                transition-duration: .5s;
+            }
+            .nav ul li a:hover {
+                color: violet;
+            }
+            .spacing {
+                width: 100%;
+                height: 80vh;
+                text-align: center;
+            }
+            .titleheading {
+                font-size: 400%;
+                color:white;
+                margin-left: 25%;
+                margin-right: 25%;
+                margin-top: 15%;
+            }
+            .explore {
+                text-transform: uppercase;
+                letter-spacing: .2em;
+                background-color: transparent;
+                color: white;
+                border-color: white;
+                font-size: 150%;
+                transition-duration: .5s;
+            }
+            .explore:hover{
+                letter-spacing: .3em;
+                cursor: pointer;
+            }
+            span {
+                position: relative;
+                left: 2.5%;
+                bottom: 35vh;
+                text-transform: uppercase;
+                font-size: 200%;
+            }
+            .chem {
+                width: 30%;
+                height: 80vh;
+                margin-left: 10%;
+                margin-bottom: 5vh;
+                background-color: rgb(100, 100, 100);
+            }
+            .chem:hover {
+                opacity: .7;
+            }
+            .phys {
+                width: 30%;
+                height: 80vh;
+                margin-left: 20%;
+                margin-bottom: 5vh;
+                background-color: rgb(100, 100, 100)
+            }
+            .phys:hover {
+                opacity: .7;
+            }
+        </style>
+        <link rel="shortcut icon" type="image/png" href="Science Simulation Logo.png">
+    </head>
+    <body>
+        <div class="back">
+            <div class="nav">
+                <img style="width: 8%" src="Science Simulation Logo.png">
+                <h1 style="font-size: 300%">Science Simulations</h1>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Chemistry</a></li>
+                    <li><a href="#">Physics</a></li>
+                </ul>
+            </div>
+            <div class="spacing">
+                <h2 class="titleheading" style="font-size: 400%; color:white">Simple and Interactive Scientific Simulations</h2>
+                <button class="explore">browse</button>
+            </div>
+            <a href="gas_simulation.html"  style="margin-bottom: 5vh">
+                <button class = 'chem'>
+                    <img src="science_pics/Chemistry Pic.png" style="height:300px; width:300px;">
+                    <h3 style="color:white; text-transform: uppercase; letter-spacing: .2em; font-size: 300%">chemistry</h3>
+                </button>
+            </a>
+            <a href="gas_simulation.html"  style="margin-bottom: 5vh">
+                <button class = 'phys'>
+                    <img src="science_pics/Physics Pic.png" style="height:300px; width:300px;">
+                    <h3 style="color:white; text-transform: uppercase; letter-spacing: .2em; font-size: 300%">physics</h3>
+                </button>
+            </a>
+        </div>
+    </body>
+</html>

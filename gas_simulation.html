@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Gas Particle Simulation
+        </title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <meta name = "viewport" content = "width=device-width, initial-scale=1.0">
+        
+    </head>
+    <style>
+        @import url("https://fonts.googleapis.com/css?family=Roboto");
+        body {
+            background-color: black;
+            font-family: Roboto;
+        }
+        canvas {
+            border: 20px solid black;
+            background-color: white;
+        }
+
+        .gas_sim {
+            border-radius: 20px;
+            border: none;
+            background-color: rgb(11, 249, 234);
+            font-family: Roboto;
+            font-weight: 100;
+            outline: none;
+            transition-duration: .5s;
+            letter-spacing: .3em;
+        }
+        .gas_sim:hover {
+            opacity: .6;
+            outline:none;
+            cursor: pointer;
+        }
+        .gas_sim:active {
+            opacity: .4;
+            outline:none;
+            transition-duration: .5s;
+            cursor: hand;
+        }
+        .gas_sim:focus {
+            outline:none;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 34px;
+            height: 60px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: rgb(11, 249, 234);
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateY(-26px);
+            -ms-transform: translateY(-26px);
+            transform: translateY(-26px);
+        }
+
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+        .enter_button {
+            outline: none;
+            border: none;
+        }
+
+        .enter_button:hover {
+            opacity: .6;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .enter_button:active {
+            opacity: .4;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .enter_button:focus {
+            outline: none;
+        }
+    </style>
+    
+    <body >
+        <br>
+        <h2 style = 'color: rgb(11, 249, 234); text-align: center'>Gas Particle Simulation</h2><br><br>
+        <div class = 'row no-gutters'>
+            <div class = 'col-7 no-gutters'>
+                <div class = 'leftside' style = 'text-align:center;'>
+                    <canvas id = 'animation'></canvas>
+                    <br><br>
+                    <button class = 'gas_sim' onClick = 'animate2()'>Start</button>
+                    <button class = 'gas_sim' onClick = 'stopAnimation()'>Stop</button>
+                </div>
+            </div>
+            <div class = 'col-5 no-gutters'>
+                <div class = 'rightside' >
+                    <br><br><br><br>
+                    <label class="switch" style = 'margin-left: 12px'>
+                        <input type = 'checkbox' onClick = 'decideVelMult()'>
+                        <span class="slider round"></span>
+                    </label>
+                    <h3 style = 'color: white; margin-left: 20px'>+</h3><br><br>
+                    <div style = 'color:rgb(11, 249, 234); font-size: 25px;'>Temperature: <input id = 'speeddisplay' type = 'textbox' value = '1'></div>
+                    <br><button style = 'margin-left:8px;' onClick = 'inputSpeed()' class = 'enter_button'>Enter</button><br><br><br><br>
+                    <label class="switch" style = 'margin-left: 12px'>
+                        <input type = 'checkbox' onClick = 'decideVelMult2()'>
+                        <span class="slider round"></span>
+                    </label>
+                    <h3 style = 'color: white; margin-left: 25px'>-</h3>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        <script>
+            function inputSpeed() {
+                if (speeddisplay.value < 300.1 && speeddisplay.value > -273.2) {velmult = parseFloat(speeddisplay.value);}
+                else {
+                    if (speeddisplay.value * -1 < speeddisplay.value) {
+                        velmult = 300.1;
+                        speeddisplay.value = velmult;
+                    }
+                    else if (speeddisplay.value * -1 > speeddisplay.value) {
+                        velmult = -273.2;
+                        speeddisplay.value = velmult;
+                    }
+                }
+            }
+
+            let velmult = 1;
+            let velCount = 0;
+            let velIncre;
+            function decideVelMult() {
+                if(velCount == 0) {
+                    velIncre = window.setInterval(function() {
+                        if (velmult+.1 < 300.1){velmult = Math.round((velmult + .1)*100)/100;}
+                        speeddisplay.value = velmult;
+                    }, 100);
+                    velCount = 1;
+                }
+                else {
+                    clearInterval(velIncre);
+                    velCount = 0;
+                    speeddisplay.value = Math.round((velmult)*100)/100;;
+                }
+            }
+
+            let velCount2 = 0;
+            let velIncre2;
+            function decideVelMult2() {
+                if(velCount2 == 0) {
+                    velIncre2 = window.setInterval(function() {
+                        if (velmult-.1 > -273.15){velmult = Math.round((velmult - .1)*100)/100;}
+                        speeddisplay.value = velmult;
+                    }, 100);
+                    velCount2 = 1;
+                }
+                else {
+                    clearInterval(velIncre2);
+                    velCount2 = 0;
+                    speeddisplay.value = Math.round((velmult)*100)/100;;
+                }
+            }
+
+            let frame = document.getElementById("animation");
+            frame.height = 500;
+            frame.width = 500;
+
+            let c = frame.getContext("2d");
+
+            let r = 5;
+
+            function Circle(x, y, dx, dy) {
+                this.x = x;
+                this.y = y;
+                this.dx = dx;
+                this.dy = dy;
+
+                this.draw = function() {
+                    c.beginPath();
+                    c.arc(this.x, this.y, r, 0, 2 * Math.PI);
+                    c.fillStyle = 'rgb(255, 0, 0)';
+                    c.fill();
+                    c.closePath();
+                }
+
+                this.motion = function() {
+                    if (this.x > frame.width - r || this.x < r) {
+                        this.dx = -this.dx;
+                    }
+                    if (this.y > frame.height - r || this.y < r) {
+                        this.dy = -this.dy;
+                    }
+                    this.x += this.dx*velmult;
+                    this.y += this.dy*velmult;
+                    this.draw();
+                }
+            }
+
+            function collide(p1, p2) {
+                let intvx1;
+                let intvx2;
+                let intersectx;
+                if (p1.dx > p1.dx * -1) {intvx1 = [p1.x-r, p1.x+p1.dx+r];}
+                else {intvx1 = [p1.x+p1.dx-r, p1.x+r];}
+                if (p2.dx > p2.dx * -1) {intvx2 = [p2.x-r, p2.x+p2.dx+r];}
+                else {intvx2 = [p2.x+p2.dx-r, p2.x+r]}
+                if (intvx1[0] <= intvx2[1] && intvx1[1] >= intvx2[0]) {intersectx = true;}
+                else {intersectx = false;}
+
+                let intvy1;
+                let intvy2;
+                let intersecty;
+                if (p1.dy > p1.dy * -1) {intvy1 = [p1.y-r, p1.y+p1.dy+r];}
+                else {intvy1 = [p1.y+p1.dy-r, p1.y+r];}
+                if (p2.dy > p2.dy * -1) {intvy2 = [p2.y-r, p2.y+p2.dy+r];}
+                else {intvy2 = [p2.y+p2.dy-r, p2.y+r]}
+                if (intvy1[0] <= intvy2[1] && intvy1[1] >= intvy2[0]) {intersecty = true;}
+                else {intersecty = false;}
+
+                if (intersectx && intersecty) {
+                    let tempdx = p1.dx;
+                    let tempdy = p1.dy;
+                    
+                    p1.dx = p2.dx;
+                    p1.dy = p2.dy;
+
+                    p2.dx = tempdx;
+                    p2.dy = tempdy;
+                }
+            }
+
+            let particles = [];
+
+            for (let i = 0; i < 100; i++) {
+                let m = (Math.random() * (frame.width - 2*r)) + r;
+                let n = (Math.random() * (frame.height - 2*r)) + r;
+
+                let dm = (Math.random() - .5) * 5;
+                let dn = (Math.random() - .5) * 5;
+
+                particles.push(new Circle(m, n, dm, dn));
+                particles[particles.length-1].draw();
+            }
+
+            function physicsCollision() {
+                for (let a = 0; a < particles.length; a++) {
+                    let b1 = particles[a];
+                    for (let k = 0; k < particles.length; k++) {
+                        let b2 = particles[k];
+                        if (a != k) {collide(b1, b2);}
+                    }
+                }
+            }
+            let movement;
+            function animate() {
+                movement = window.setTimeout(animate, 10);
+                c.clearRect(0, 0, frame.width, frame.height);
+                physicsCollision();
+                for (let i = 0; i < particles.length; i++) {particles[i].motion();}
+            }
+            let otherCount = 0;
+            function stopAnimation() {
+                clearTimeout(movement);
+                if (otherCount == 0) {otherCount++;}
+            }
+            let count = 0;
+            function animate2() {
+                if (count==0 || otherCount==1) {
+                    animate();
+                    count++;
+                    otherCount = 0;
+                }
+            }
+
+        </script>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    </body>
+    
+</html>
